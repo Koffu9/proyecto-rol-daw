@@ -1,0 +1,115 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botonVolver {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.botonVolver:hover {
+    color: var(--accent-primary);
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.campo label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.input, .textarea {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.input:focus, .textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.botonPrimario {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botonPrimario:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.botonPrimario:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.botonSecundario {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.botonSecundario:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.error {
+    color: var(--error);
+    font-size: 0.9rem;
+}

@@ -1,0 +1,195 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botones {
+    display: flex;
+    gap: 1rem;
+}
+
+.botonPrimario {
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botonPrimario:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.botonSecundario {
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--accent-primary);
+    background-color: transparent;
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.botonSecundario:hover {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.card:hover {
+    border-color: var(--accent-primary);
+}
+
+.card h3 {
+    font-size: 1.1rem;
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    flex: 1;
+}
+
+.cardBotones {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.botonEditar {
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--accent-secondary);
+    background-color: transparent;
+    color: var(--accent-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.botonEditar:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.botonEliminar {
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--error);
+    background-color: transparent;
+    color: var(--error);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.botonEliminar:hover {
+    background-color: var(--error);
+    color: var(--text-primary);
+}
+
+.vacio {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 4rem 0;
+}
+
+.cargando {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 4rem 0;
+}
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.modal {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal h2 {
+    font-size: 1.3rem;
+}
+
+.modal p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.modalBotones {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.error {
+    color: var(--error);
+    font-size: 0.9rem;
+}

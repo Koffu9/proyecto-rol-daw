@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    /* Fondos */
+    --bg-primary: #0d0d1a;
+    --bg-secondary: #13132b;
+    --bg-tertiary: #1a1a3e;
+
+    /* Acentos */
+    --accent-primary: #c9a84c;
+    --accent-secondary: #7b5ea7;
+
+    /* Texto */
+    --text-primary: #e8e8f0;
+    --text-secondary: #8888aa;
+
+    /* Estados */
+    --error: #e74c3c;
+    --success: #2ecc71;
+
+    /* Bordes */
+    --border: #2a2a5a;
+
+    /* Tipografía */
+    --font-titulo: 'Cinzel', serif;
+    --font-texto: 'Inter', sans-serif;
+
+    /* Bordes redondeados */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-texto);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-titulo);
+    color: var(--accent-primary);
+}
+
+a {
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-secondary);
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--font-texto);
+}
+
+input, textarea, select {
+    font-family: var(--font-texto);
+}

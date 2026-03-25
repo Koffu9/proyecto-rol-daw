@@ -1,0 +1,76 @@
+.footer {
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem 1.5rem;
+    margin-top: auto;
+}
+
+.contenido {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.marca h3 {
+    font-family: var(--font-titulo);
+    font-size: 1.3rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.75rem;
+}
+
+.marca p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.columna {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.columna h4 {
+    font-family: var(--font-titulo);
+    font-size: 0.95rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+}
+
+.columna a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.columna a:hover {
+    color: var(--accent-primary);
+}
+
+.redes {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.25rem;
+}
+
+.redes a {
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    transition: color 0.2s;
+}
+
+.redes a:hover {
+    color: var(--accent-primary);
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
