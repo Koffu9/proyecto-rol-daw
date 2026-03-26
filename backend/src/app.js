@@ -25,4 +25,7 @@ app.use('/api/auth', authRoutes);
 const campanaRoutes = require('./routes/campanaRoutes');
 app.use('/api/campanas', campanaRoutes);
 
+const personajeRoutes = require('./routes/personajeRoutes');
+app.use('/api/personajes', personajeRoutes);
+
 module.exports = app;
