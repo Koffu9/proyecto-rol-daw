@@ -1,0 +1,367 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botonVolver {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.botonVolver:hover {
+    color: var(--accent-primary);
+}
+
+.progreso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.pasoWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.pasoBola {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.pasoActivo {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.pasoCompletado {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+.pasoLabel {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0 0.5rem;
+    white-space: nowrap;
+}
+
+.pasoLabelActivo {
+    color: var(--accent-primary);
+}
+
+.pasoLinea {
+    width: 40px;
+    height: 2px;
+    background-color: var(--border);
+    transition: background-color 0.2s;
+}
+
+.pasoLineaCompletada {
+    background-color: var(--accent-primary);
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.paso {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.paso h2 {
+    font-size: 1.3rem;
+}
+
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.campo label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.input, .textarea {
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    resize: vertical;
+}
+
+.input:focus, .textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.gridAtributos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.atributo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+.atributo label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: capitalize;
+}
+
+.inputNumero {
+    width: 70px;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.inputNumero:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.modificador {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.seccion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.seccion h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+}
+
+.gridCheck {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.checkLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.checkLabel input {
+    accent-color: var(--accent-primary);
+    width: 16px;
+    height: 16px;
+}
+
+.inventarioInput {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.botonAnadir {
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--accent-primary);
+    background-color: transparent;
+    color: var(--accent-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.botonAnadir:hover {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+.inventarioForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.inventarioFila {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.inventarioArma {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+}
+
+.armaTag {
+    font-size: 0.75rem;
+    color: var(--accent-secondary);
+    margin-left: 0.5rem;
+}
+
+.inventarioLista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.inventarioItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+.inventarioItem button {
+    background: none;
+    border: none;
+    color: var(--error);
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.gridMonedas {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+}
+
+.moneda {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.moneda label {
+    font-size: 0.8rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.navegacion {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.botonPrimario {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botonPrimario:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.botonPrimario:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.botonSecundario {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.botonSecundario:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.error {
+    color: var(--error);
+    font-size: 0.9rem;
+}

@@ -27,6 +27,8 @@ const getPersonaje = async (req, res) => {
     }
 };
 
+
+
 // Crea un nuevo personaje y su ficha
 const crearPersonaje = async (req, res) => {
     const { nombre, descripcion, id_campana, sistema, datos } = req.body;

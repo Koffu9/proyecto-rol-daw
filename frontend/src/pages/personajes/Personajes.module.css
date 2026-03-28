@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botonPrimario {
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botonPrimario:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.vacio {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 4rem 0;
+}
+
+.cargando {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 4rem 0;
+}

@@ -12,7 +12,14 @@ const crearPersonaje = async (nombre, descripcion, id_usuario, id_campana) => {
 // Obtiene todos los personajes de un usuario
 const getPersonajesByUsuario = async (id_usuario) => {
     const [rows] = await db.query(
-        'SELECT p.*, s.nombre AS sistema_nombre FROM personaje p LEFT JOIN ficha f ON p.id = f.id_personaje LEFT JOIN sistema s ON f.sistema = s.slug WHERE p.id_usuario = ? AND p.es_npc = FALSE',
+        `SELECT p.*, 
+                f.sistema, 
+                f.datos,
+                c.titulo AS campana_titulo
+         FROM personaje p
+         LEFT JOIN ficha f ON p.id = f.id_personaje
+         LEFT JOIN campana c ON p.id_campana = c.id
+         WHERE p.id_usuario = ? AND p.es_npc = FALSE`,
         [id_usuario]
     );
     return rows;

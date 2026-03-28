@@ -9,7 +9,9 @@ import Campanas from './pages/campanas/Campanas.jsx'
 import CrearCampana from './pages/campanas/CrearCampana.jsx';
 import EditarCampana from './pages/campanas/EditarCampana.jsx';
 import DetalleCampana from './pages/campanas/DetalleCampana';
-
+import Personajes from './pages/personajes/Personajes';
+import CrearPersonaje from './pages/personajes/CrearPersonaje';
+import DetallePersonaje from './pages/personajes/DetallePersonaje';
 
 const ProtectedRoute = ({ children }) => {
   const { usuario, cargando } = useAuth();
@@ -40,8 +42,12 @@ const App = () => {
           <Route path="/campanas/:id" element={<ProtectedRoute><Layout><DetalleCampana /></Layout></ProtectedRoute>} />
           <Route path="/campanas/:id/editar" element={<ProtectedRoute><Layout><EditarCampana /></Layout></ProtectedRoute>} />
 
+          // Rutas personaje
+          <Route path="/personajes" element={<ProtectedRoute><Layout><Personajes /></Layout></ProtectedRoute>} />
+          <Route path="/personajes/crear" element={<ProtectedRoute><Layout><CrearPersonaje /></Layout></ProtectedRoute>} />
+          <Route path="/personajes/:id" element={<ProtectedRoute><Layout><DetallePersonaje /></Layout></ProtectedRoute>} />
 
-          <Route path="/personajes" element={<ProtectedRoute><Layout><div>Personajes</div></Layout></ProtectedRoute>} />
+
           <Route path="/juegos" element={<ProtectedRoute><Layout><div>Juegos</div></Layout></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
