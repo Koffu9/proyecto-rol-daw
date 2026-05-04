@@ -16,6 +16,7 @@ import SubirNivel from './pages/personajes/SubirNivel';
 import CrearNpc from './pages/campanas/CrearNpc';
 import EditarPersonaje from './pages/personajes/EditarPersonaje';
 import Perfil from './pages/Perfil';
+import Juegos from './pages/Juegos';
 
 const ProtectedRoute = ({ children }) => {
   const { usuario, cargando } = useAuth();
@@ -56,11 +57,11 @@ const App = () => {
           <Route path="/personajes/:id/subir-nivel" element={<ProtectedRoute><Layout><SubirNivel /></Layout></ProtectedRoute>} />
           <Route path="/personajes/:id/editar" element={<ProtectedRoute><Layout><EditarPersonaje /></Layout></ProtectedRoute>} />
 
-          <Route path="/juegos" element={<ProtectedRoute><Layout><div>Juegos</div></Layout></ProtectedRoute>} />
+          <Route path="/juegos" element={<ProtectedRoute><Layout><Juegos /></Layout></ProtectedRoute>} />
           
           // Rutas Perfil
           <Route path="/perfil" element={<ProtectedRoute><Layout><Perfil /></Layout></ProtectedRoute>} />
-          
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
