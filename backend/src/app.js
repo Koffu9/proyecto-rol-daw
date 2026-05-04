@@ -38,4 +38,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 const uploadRoutes = require('./routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
+const perfilRoutes = require('./routes/perfilRoutes');
+app.use('/api/perfil', perfilRoutes);
+
 module.exports = app;

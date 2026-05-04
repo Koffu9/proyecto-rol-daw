@@ -26,18 +26,16 @@ const register = async (req, res) => {
 //Lógica del login
 const login = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const users = await authModel.findByEmail(email);
-        if (users.length === 0) {
-            return res.status(401).json({ error: 'Credenciales incorrectas' });
-        }
+        if (users.length === 0) return res.status(401).json({ error: 'Credenciales incorrectas' });
 
         const usuario = users[0];
         const passwordValida = await bcrypt.compare(password, usuario.password_hash);
-        if (!passwordValida) {
-            return res.status(401).json({ error: 'Credenciales incorrectas' });
-        }
+        if (!passwordValida) return res.status(401).json({ error: 'Credenciales incorrectas' });
+
+        // Guardamos la hora de inicio de sesión
+        await authModel.updateUltimaConexion(usuario.id);
 
         const token = jwt.sign(
             { id: usuario.id, nombre_usuario: usuario.nombre_usuario },
@@ -53,11 +51,22 @@ const login = async (req, res) => {
                 email: usuario.email
             }
         });
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
 
-module.exports = { register, login };
+// Cierra sesión y suma las horas de conexión
+const logout = async (req, res) => {
+    const id_usuario = req.usuario.id;
+    try {
+        await authModel.updateHorasConexion(id_usuario);
+        res.json({ mensaje: 'Sesión cerrada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
+module.exports = { register, login, logout };

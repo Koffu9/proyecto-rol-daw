@@ -1,5 +1,6 @@
 //Contexto de la sesión del usuario.
 import { createContext, useState, useContext, useEffect } from 'react';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -22,14 +23,26 @@ export const AuthProvider = ({ children }) => {
         setUsuario(usuarioData);
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('usuario');
-        setUsuario(null);
+    const logout = async () => {
+        try {
+            await api.post('/auth/logout');
+        } catch (error) {
+            console.error(error);
+        } finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario');
+            setUsuario(null);
+        }
+    };
+
+    const updateUsuario = (datos) => {
+        const usuarioActualizado = { ...usuario, ...datos };
+        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+        setUsuario(usuarioActualizado);
     };
 
     return (
-        <AuthContext.Provider value={{ usuario, login, logout, cargando }}>
+        <AuthContext.Provider value={{ usuario, login, logout, cargando, updateUsuario }}>
             {children}
         </AuthContext.Provider>
     );

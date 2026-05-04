@@ -24,4 +24,53 @@ const createUsuario = async (nombre_usuario, email, password_hash) => {
     return result;
 };
 
-module.exports = { findByEmailOrUsername, findByEmail, createUsuario };
+
+// Obtiene un usuario por su id
+const findById = async (id) => {
+    const [rows] = await db.query(
+        'SELECT id, nombre_usuario, email, imagen_url, created_at FROM usuario WHERE id = ?',
+        [id]
+    );
+    return rows[0];
+};
+
+// Actualiza la foto de perfil de un usuario
+const updateImagenPerfil = async (id, imagen_url) => {
+    const [result] = await db.query(
+        'UPDATE usuario SET imagen_url = ? WHERE id = ?',
+        [imagen_url, id]
+    );
+    return result;
+};
+
+// Actualiza la contraseña de un usuario
+const updatePassword = async (id, password_hash) => {
+    const [result] = await db.query(
+        'UPDATE usuario SET password_hash = ? WHERE id = ?',
+        [password_hash, id]
+    );
+    return result;
+};
+
+// Guarda la hora de inicio de sesión
+const updateUltimaConexion = async (id) => {
+    const [result] = await db.query(
+        'UPDATE usuario SET ultima_conexion = NOW() WHERE id = ?',
+        [id]
+    );
+    return result;
+};
+
+// Suma las horas de la sesión actual a las horas totales
+const updateHorasConexion = async (id) => {
+    const [result] = await db.query(
+        `UPDATE usuario 
+         SET horas_conexion = horas_conexion + TIMESTAMPDIFF(SECOND, ultima_conexion, NOW()) / 3600,
+             ultima_conexion = NULL
+         WHERE id = ? AND ultima_conexion IS NOT NULL`,
+        [id]
+    );
+    return result;
+};
+
+module.exports = { findByEmailOrUsername, findByEmail, createUsuario, findById, updateImagenPerfil, updatePassword, updateUltimaConexion, updateHorasConexion };

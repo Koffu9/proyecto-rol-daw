@@ -15,6 +15,7 @@ import DetallePersonaje from './pages/personajes/DetallePersonaje';
 import SubirNivel from './pages/personajes/SubirNivel';
 import CrearNpc from './pages/campanas/CrearNpc';
 import EditarPersonaje from './pages/personajes/EditarPersonaje';
+import Perfil from './pages/Perfil';
 
 const ProtectedRoute = ({ children }) => {
   const { usuario, cargando } = useAuth();
@@ -56,6 +57,9 @@ const App = () => {
           <Route path="/personajes/:id/editar" element={<ProtectedRoute><Layout><EditarPersonaje /></Layout></ProtectedRoute>} />
 
           <Route path="/juegos" element={<ProtectedRoute><Layout><div>Juegos</div></Layout></ProtectedRoute>} />
+          
+          // Rutas Perfil
+          <Route path="/perfil" element={<ProtectedRoute><Layout><Perfil /></Layout></ProtectedRoute>} />
           
         </Routes>
       </BrowserRouter>
