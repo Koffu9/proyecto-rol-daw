@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
 // Crea un nuevo personaje
-const crearPersonaje = async (nombre, descripcion, id_usuario, id_campana) => {
+const crearPersonaje = async (nombre, descripcion, id_usuario, id_campana, es_npc = false) => {
     const [result] = await db.query(
-        'INSERT INTO personaje (nombre, descripcion, id_usuario, id_campana) VALUES (?, ?, ?, ?)',
-        [nombre, descripcion, id_usuario, id_campana]
+        'INSERT INTO personaje (nombre, descripcion, id_usuario, id_campana, es_npc) VALUES (?, ?, ?, ?, ?)',
+        [nombre, descripcion, id_usuario, id_campana, es_npc]
     );
     return result;
 };
@@ -75,6 +75,15 @@ const getSistemas = async () => {
     return rows;
 };
 
+// Sube el nivel del personaje y actualiza su ficha
+const subirNivel = async (id_personaje, datos) => {
+    const [result] = await db.query(
+        'UPDATE ficha SET datos = ? WHERE id_personaje = ?',
+        [JSON.stringify(datos), id_personaje]
+    );
+    return result;
+};
+
 module.exports = {
     crearPersonaje,
     getPersonajesByUsuario,
@@ -83,5 +92,6 @@ module.exports = {
     guardarFicha,
     editarPersonaje,
     eliminarPersonaje,
-    getSistemas
+    getSistemas,
+    subirNivel
 };

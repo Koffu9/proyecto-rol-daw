@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCampanasRequest, eliminarCampanaRequest } from '../../services/campanaService';
 import CampanaCard from '../../components/campaign/CampanaCard';
 import styles from './Campanas.module.css';
+import { unirseACampanaRequest } from '../../services/campanaService';
 
 const Campanas = () => {
     const [campanas, setCampanas] = useState([]);
@@ -82,7 +83,7 @@ const ModalUnirse = ({ onCerrar, onUnirse }) => {
         e.preventDefault();
         setError('');
         try {
-            console.log('Unirse con código:', codigo);
+            await unirseACampanaRequest(codigo);
             onUnirse();
             onCerrar();
         } catch (err) {

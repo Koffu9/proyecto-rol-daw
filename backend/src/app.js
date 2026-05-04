@@ -28,4 +28,7 @@ app.use('/api/campanas', campanaRoutes);
 const personajeRoutes = require('./routes/personajeRoutes');
 app.use('/api/personajes', personajeRoutes);
 
+const tiradaRoutes = require('./routes/tiradaRoutes');
+app.use('/api/tiradas', tiradaRoutes);
+
 module.exports = app;

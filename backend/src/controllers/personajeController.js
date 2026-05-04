@@ -31,11 +31,11 @@ const getPersonaje = async (req, res) => {
 
 // Crea un nuevo personaje y su ficha
 const crearPersonaje = async (req, res) => {
-    const { nombre, descripcion, id_campana, sistema, datos } = req.body;
+    const { nombre, descripcion, id_campana, es_npc, sistema, datos } = req.body;
     const id_usuario = req.usuario.id;
 
     try {
-        const result = await personajeModel.crearPersonaje(nombre, descripcion, id_usuario, id_campana || null);
+        const result = await personajeModel.crearPersonaje(nombre, descripcion, id_usuario, id_campana || null, es_npc || false);
         const id_personaje = result.insertId;
 
         if (sistema && datos) {
@@ -102,4 +102,25 @@ const getSistemas = async (req, res) => {
     }
 };
 
-module.exports = { getPersonajes, getPersonaje, crearPersonaje, editarPersonaje, eliminarPersonaje, getSistemas };
+// Sube el nivel del personaje y actualiza su ficha
+const subirNivel = async (req, res) => {
+    const { id } = req.params;
+    const { datos } = req.body;
+    const id_usuario = req.usuario.id;
+
+    try {
+        const personaje = await personajeModel.getPersonajeById(id);
+        if (!personaje) return res.status(404).json({ error: 'Personaje no encontrado' });
+        if (personaje.id_usuario !== id_usuario) return res.status(403).json({ error: 'No tienes permisos para editar este personaje' });
+
+        await personajeModel.subirNivel(id, datos);
+        res.json({ mensaje: 'Nivel subido correctamente' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
+
+module.exports = { getPersonajes, getPersonaje, crearPersonaje, editarPersonaje, eliminarPersonaje, getSistemas, subirNivel };

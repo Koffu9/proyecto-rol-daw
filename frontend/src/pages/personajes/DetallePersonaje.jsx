@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPersonajeRequest } from '../../services/personajeService';
 import styles from './DetallePersonaje.module.css';
+import { useAuth } from '../../context/AuthContext';
+import DiceRoller from '../../components/dice/DiceRoller';
+import DiceHistory from '../../components/dice/DiceHistory';
+
 
 const BONIFICADOR_COMPETENCIA = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6];
 
@@ -14,7 +18,8 @@ const DetallePersonaje = () => {
     const [pestanaInferior, setPestanaInferior] = useState('equipo');
     const { id } = useParams();
     const navigate = useNavigate();
-
+    const { usuario } = useAuth();
+    const [refreshTiradas, setRefreshTiradas] = useState(0);
     useEffect(() => {
         cargarPersonaje();
     }, []);
@@ -69,7 +74,7 @@ const DetallePersonaje = () => {
 
             {/* Cabecera */}
             <div className={styles.cabecera}>
-                <button className={styles.botonVolver} onClick={() => navigate('/personajes')}>← Volver</button>
+                <button className={styles.botonVolver} onClick={() => navigate(-1)}>← Volver</button>
                 <div className={styles.cabeceraInfo}>
                     <div className={styles.avatar}>
                         {personaje.imagen_url
@@ -88,12 +93,17 @@ const DetallePersonaje = () => {
                         )}
                     </div>
                     <div className={styles.cabeceraAcciones}>
-                        <button className={styles.botonNivel} onClick={() => navigate(`/personajes/${id}/editar`)}>
-                            ⬆ Subir nivel
-                        </button>
-                        <button className={styles.botonEditar} onClick={() => navigate(`/personajes/${id}/editar`)}>
-                            Editar
-                        </button>
+                        {(!personaje.es_npc || personaje.id_usuario === usuario.id) && (
+                            <button className={styles.botonNivel} onClick={() => navigate(`/personajes/${id}/subir-nivel`)}>
+                                ⬆ Subir nivel
+                            </button>
+                        )}
+                        {(!personaje.es_npc || personaje.id_usuario === usuario.id) && (
+                            <button className={styles.botonEditar} onClick={() => navigate(`/personajes/${id}/editar`)}>
+                                Editar
+                            </button>
+                        )}
+
                     </div>
                 </div>
             </div>
@@ -226,6 +236,12 @@ const DetallePersonaje = () => {
                     </table>
                 </div>
             )}
+            {/* Tirada de dados */}
+            <DiceRoller
+                id_personaje={parseInt(id)}
+                onTirada={() => setRefreshTiradas(prev => prev + 1)}
+            />
+            <DiceHistory refresh={refreshTiradas} />
 
             {/* Pestañas inferiores */}
             <div className={styles.pestanas}>

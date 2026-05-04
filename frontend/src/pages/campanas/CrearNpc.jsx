@@ -1,38 +1,35 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { crearPersonajeRequest } from '../../services/personajeService';
-import styles from './CrearPersonaje.module.css';
 import { RAZAS, CLASES } from '../../constants/dnd';
+import styles from '../personajes/CrearPersonaje.module.css';
 
 const PASOS = ['Info básica', 'Atributos', 'Combate', 'Competencias', 'Equipo y trasfondo'];
 
-const CrearPersonaje = () => {
+const CrearNpc = () => {
     const [pasoActual, setPasoActual] = useState(0);
     const [error, setError] = useState('');
     const [cargando, setCargando] = useState(false);
     const navigate = useNavigate();
+    const { id_campana } = useParams();
 
     const [form, setForm] = useState({
-        // Info básica
         nombre: '',
         descripcion: '',
         clase: '',
-        raza: '',
         subraza: '',
+        raza: '',
         trasfondo: '',
         alineamiento: '',
-        // Atributos
         atributos: {
             fuerza: 10, destreza: 10, constitucion: 10,
             inteligencia: 10, sabiduria: 10, carisma: 10
         },
-        // Combate
         combate: {
             puntos_vida_max: 8, puntos_vida_actual: 8,
             dados_golpe: '1d8', clase_armadura: 10,
             iniciativa: 0, velocidad: 30
         },
-        // Competencias
         tiradas_salvacion: {
             fuerza: false, destreza: false, constitucion: false,
             inteligencia: false, sabiduria: false, carisma: false
@@ -45,10 +42,9 @@ const CrearPersonaje = () => {
             religion: false, sigilo: false, supervivencia: false,
             trato_animales: false
         },
-        // Equipo y trasfondo
         equipo: {
             inventario: [],
-            monedas: { po: 0, pp: 0, pc: 0}
+            monedas: { po: 0, pp: 0, pc: 0 }
         },
         trasfondo_rp: {
             rasgos_personalidad: '',
@@ -59,46 +55,62 @@ const CrearPersonaje = () => {
     });
 
     const [inventarioInput, setInventarioInput] = useState({
-        nombre: '',
-        es_arma: false,
-        dado_dano: '1d6',
-        atributo: 'fuerza',
-        competencia: false
+        nombre: '', es_arma: false, dado_dano: '1d6', atributo: 'fuerza', competencia: false
     });
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+    const handleAtributo = (e) => setForm({ ...form, atributos: { ...form.atributos, [e.target.name]: parseInt(e.target.value) || 0 } });
+
+    const handleCombate = (e) => setForm({ ...form, combate: { ...form.combate, [e.target.name]: e.target.value } });
+
+    const handleSalvacion = (e) => setForm({ ...form, tiradas_salvacion: { ...form.tiradas_salvacion, [e.target.name]: e.target.checked } });
+
+    const handleHabilidad = (e) => setForm({ ...form, habilidades: { ...form.habilidades, [e.target.name]: e.target.checked } });
+
+    const handleMoneda = (e) => setForm({ ...form, equipo: { ...form.equipo, monedas: { ...form.equipo.monedas, [e.target.name]: parseInt(e.target.value) || 0 } } });
+
+    const handleTrasfondoRp = (e) => setForm({ ...form, trasfondo_rp: { ...form.trasfondo_rp, [e.target.name]: e.target.value } });
+
+    const handleRaza = (e) => {
+        const raza = RAZAS[e.target.value];
+        if (!raza) return setForm({ ...form, raza: e.target.value });
+        if (raza.subrazas) {
+            setForm({ ...form, raza: e.target.value, subraza: '' });
+            return;
+        }
+        const nuevosAtributos = { ...form.atributos };
+        Object.entries(raza.bonificadores).forEach(([attr, bon]) => {
+            if (nuevosAtributos[attr] !== undefined) nuevosAtributos[attr] = 10 + bon;
+        });
+        setForm({ ...form, raza: e.target.value, subraza: '', atributos: nuevosAtributos });
     };
 
-    const handleAtributo = (e) => {
-        setForm({ ...form, atributos: { ...form.atributos, [e.target.name]: parseInt(e.target.value) || 0 } });
+    const handleSubraza = (e) => {
+        const raza = RAZAS[form.raza];
+        if (!raza?.subrazas) return;
+        const subraza = raza.subrazas[e.target.value];
+        if (!subraza) return;
+        const nuevosAtributos = { ...form.atributos };
+        Object.entries(subraza.bonificadores).forEach(([attr, bon]) => {
+            if (nuevosAtributos[attr] !== undefined) nuevosAtributos[attr] = 10 + bon;
+        });
+        setForm({ ...form, subraza: e.target.value, atributos: nuevosAtributos });
     };
 
-    const handleCombate = (e) => {
-        setForm({ ...form, combate: { ...form.combate, [e.target.name]: e.target.value } });
-    };
-
-    const handleSalvacion = (e) => {
-        setForm({ ...form, tiradas_salvacion: { ...form.tiradas_salvacion, [e.target.name]: e.target.checked } });
-    };
-
-    const handleHabilidad = (e) => {
-        setForm({ ...form, habilidades: { ...form.habilidades, [e.target.name]: e.target.checked } });
-    };
-
-    const handleMoneda = (e) => {
-        setForm({ ...form, equipo: { ...form.equipo, monedas: { ...form.equipo.monedas, [e.target.name]: parseInt(e.target.value) || 0 } } });
-    };
-
-    const handleTrasfondoRp = (e) => {
-        setForm({ ...form, trasfondo_rp: { ...form.trasfondo_rp, [e.target.name]: e.target.value } });
+    const handleClase = (e) => {
+        const clase = CLASES[e.target.value];
+        if (!clase) return setForm({ ...form, clase: e.target.value });
+        const nuevasSalvaciones = { ...form.tiradas_salvacion };
+        Object.keys(nuevasSalvaciones).forEach(attr => {
+            nuevasSalvaciones[attr] = clase.salvaciones.includes(attr);
+        });
+        setForm({ ...form, clase: e.target.value, combate: { ...form.combate, dados_golpe: clase.dado_golpe }, tiradas_salvacion: nuevasSalvaciones });
     };
 
     const agregarInventario = () => {
         if (!inventarioInput.nombre.trim()) return;
-        const objeto = inventarioInput.es_arma
-            ? { ...inventarioInput }
-            : { nombre: inventarioInput.nombre, es_arma: false };
+        const objeto = inventarioInput.es_arma ? { ...inventarioInput } : { nombre: inventarioInput.nombre, es_arma: false };
         setForm({ ...form, equipo: { ...form.equipo, inventario: [...form.equipo.inventario, objeto] } });
         setInventarioInput({ nombre: '', es_arma: false, dado_dano: '1d6', atributo: 'fuerza', competencia: false });
     };
@@ -116,6 +128,8 @@ const CrearPersonaje = () => {
             await crearPersonajeRequest({
                 nombre: form.nombre,
                 descripcion: form.descripcion,
+                id_campana: parseInt(id_campana),
+                es_npc: true,
                 sistema: 'dnd',
                 datos: {
                     clase: form.clase,
@@ -133,75 +147,21 @@ const CrearPersonaje = () => {
                     trasfondo_rp: form.trasfondo_rp
                 }
             });
-            navigate('/personajes');
+            navigate(`/campanas/${id_campana}`);
         } catch (err) {
-            setError(err.response?.data?.error || 'Error al crear el personaje');
+            setError(err.response?.data?.error || 'Error al crear el NPC');
         } finally {
             setCargando(false);
         }
     };
 
-    const handleRaza = (e) => {
-        const raza = RAZAS[e.target.value];
-        if (!raza) return setForm({ ...form, raza: e.target.value });
-
-        // Si tiene subrazas no aplicamos bonificadores todavía
-        if (raza.subrazas) {
-            setForm({ ...form, raza: e.target.value, subraza: '' });
-            return;
-        }
-
-        // Aplicamos bonificadores al atributo base
-        const nuevosAtributos = { ...form.atributos };
-        Object.entries(raza.bonificadores).forEach(([attr, bon]) => {
-            if (nuevosAtributos[attr] !== undefined) {
-                nuevosAtributos[attr] = 10 + bon;
-            }
-        });
-        setForm({ ...form, raza: e.target.value, subraza: '', atributos: nuevosAtributos });
-    };
-
-    const handleSubraza = (e) => {
-        const raza = RAZAS[form.raza];
-        if (!raza?.subrazas) return;
-        const subraza = raza.subrazas[e.target.value];
-        if (!subraza) return;
-
-        const nuevosAtributos = { ...form.atributos };
-        Object.entries(subraza.bonificadores).forEach(([attr, bon]) => {
-            if (nuevosAtributos[attr] !== undefined) {
-                nuevosAtributos[attr] = 10 + bon;
-            }
-        });
-        setForm({ ...form, subraza: e.target.value, atributos: nuevosAtributos });
-    };
-
-    const handleClase = (e) => {
-        const clase = CLASES[e.target.value];
-        if (!clase) return setForm({ ...form, clase: e.target.value });
-
-        // Autocompleta dado de golpe y tiradas de salvacion
-        const nuevasSalvaciones = { ...form.tiradas_salvacion };
-        Object.keys(nuevasSalvaciones).forEach(attr => {
-            nuevasSalvaciones[attr] = clase.salvaciones.includes(attr);
-        });
-
-        setForm({
-            ...form,
-            clase: e.target.value,
-            combate: { ...form.combate, dados_golpe: clase.dado_golpe },
-            tiradas_salvacion: nuevasSalvaciones
-        });
-    };
-
     return (
         <div className={styles.container}>
             <div className={styles.cabecera}>
-                <h1>Crear personaje</h1>
-                <button className={styles.botonVolver} onClick={() => navigate('/personajes')}>← Volver</button>
+                <h1>Crear NPC con ficha</h1>
+                <button className={styles.botonVolver} onClick={() => navigate(`/campanas/${id_campana}`)}>← Volver</button>
             </div>
 
-            {/* Barra de progreso */}
             <div className={styles.progreso}>
                 {PASOS.map((paso, index) => (
                     <div key={index} className={styles.pasoWrapper}>
@@ -214,18 +174,16 @@ const CrearPersonaje = () => {
                 ))}
             </div>
 
-            {/* Contenido del paso */}
             <div className={styles.card}>
                 {error && <p className={styles.error}>{error}</p>}
 
-                {/* Paso 1 - Info básica */}
                 {pasoActual === 0 && (
                     <div className={styles.paso}>
                         <h2>Información básica</h2>
                         <div className={styles.grid2}>
                             <div className={styles.campo}>
                                 <label>Nombre *</label>
-                                <input name="nombre" value={form.nombre} onChange={handleChange} className={styles.input} placeholder="Nombre del personaje" required />
+                                <input name="nombre" value={form.nombre} onChange={handleChange} className={styles.input} placeholder="Nombre del NPC" required />
                             </div>
                             <div className={styles.campo}>
                                 <label>Clase</label>
@@ -245,7 +203,6 @@ const CrearPersonaje = () => {
                                     ))}
                                 </select>
                             </div>
-                            {/* Subraza si la raza tiene subrazas */}
                             {form.raza && RAZAS[form.raza]?.subrazas && (
                                 <div className={styles.campo}>
                                     <label>Subraza</label>
@@ -279,12 +236,11 @@ const CrearPersonaje = () => {
                         </div>
                         <div className={styles.campo}>
                             <label>Descripción</label>
-                            <textarea name="descripcion" value={form.descripcion} onChange={handleChange} className={styles.textarea} rows={3} placeholder="Descripción del personaje..." />
+                            <textarea name="descripcion" value={form.descripcion} onChange={handleChange} className={styles.textarea} rows={3} placeholder="Descripción del NPC..." />
                         </div>
                     </div>
                 )}
 
-                {/* Paso 2 - Atributos */}
                 {pasoActual === 1 && (
                     <div className={styles.paso}>
                         <h2>Atributos</h2>
@@ -292,7 +248,7 @@ const CrearPersonaje = () => {
                             {Object.keys(form.atributos).map(attr => (
                                 <div key={attr} className={styles.atributo}>
                                     <label>{attr.charAt(0).toUpperCase() + attr.slice(1)}</label>
-                                    <input type="number" name={attr} value={form.atributos[attr]} onChange={handleAtributo} className={styles.inputNumero} min={1} max={20} />
+                                    <input type="number" name={attr} value={form.atributos[attr]} onChange={handleAtributo} className={styles.inputNumero} min={1} max={30} />
                                     <span className={styles.modificador}>
                                         {Math.floor((form.atributos[attr] - 10) / 2) >= 0 ? '+' : ''}
                                         {Math.floor((form.atributos[attr] - 10) / 2)}
@@ -303,7 +259,6 @@ const CrearPersonaje = () => {
                     </div>
                 )}
 
-                {/* Paso 3 - Combate */}
                 {pasoActual === 2 && (
                     <div className={styles.paso}>
                         <h2>Combate</h2>
@@ -336,7 +291,6 @@ const CrearPersonaje = () => {
                     </div>
                 )}
 
-                {/* Paso 4 - Competencias */}
                 {pasoActual === 3 && (
                     <div className={styles.paso}>
                         <h2>Competencias</h2>
@@ -365,7 +319,6 @@ const CrearPersonaje = () => {
                     </div>
                 )}
 
-                {/* Paso 5 - Equipo y trasfondo */}
                 {pasoActual === 4 && (
                     <div className={styles.paso}>
                         <h2>Equipo y trasfondo</h2>
@@ -393,11 +346,7 @@ const CrearPersonaje = () => {
                                     <div className={styles.inventarioArma}>
                                         <div className={styles.campo}>
                                             <label>Dado de daño</label>
-                                            <select
-                                                value={inventarioInput.dado_dano}
-                                                onChange={e => setInventarioInput({ ...inventarioInput, dado_dano: e.target.value })}
-                                                className={styles.input}
-                                            >
+                                            <select value={inventarioInput.dado_dano} onChange={e => setInventarioInput({ ...inventarioInput, dado_dano: e.target.value })} className={styles.input}>
                                                 <option>1d4</option>
                                                 <option>1d6</option>
                                                 <option>1d8</option>
@@ -408,36 +357,23 @@ const CrearPersonaje = () => {
                                         </div>
                                         <div className={styles.campo}>
                                             <label>Atributo</label>
-                                            <select
-                                                value={inventarioInput.atributo}
-                                                onChange={e => setInventarioInput({ ...inventarioInput, atributo: e.target.value })}
-                                                className={styles.input}
-                                            >
+                                            <select value={inventarioInput.atributo} onChange={e => setInventarioInput({ ...inventarioInput, atributo: e.target.value })} className={styles.input}>
                                                 <option value="fuerza">Fuerza</option>
                                                 <option value="destreza">Destreza</option>
                                             </select>
                                         </div>
                                         <label className={styles.checkLabel}>
-                                            <input
-                                                type="checkbox"
-                                                checked={inventarioInput.competencia}
-                                                onChange={e => setInventarioInput({ ...inventarioInput, competencia: e.target.checked })}
-                                            />
+                                            <input type="checkbox" checked={inventarioInput.competencia} onChange={e => setInventarioInput({ ...inventarioInput, competencia: e.target.checked })} />
                                             Competencia
                                         </label>
                                     </div>
                                 )}
-                                <button type="button" className={styles.botonAnadir} onClick={agregarInventario}>
-                                    Añadir objeto
-                                </button>
+                                <button type="button" className={styles.botonAnadir} onClick={agregarInventario}>Añadir objeto</button>
                             </div>
                             <ul className={styles.inventarioLista}>
                                 {form.equipo.inventario.map((item, i) => (
                                     <li key={i} className={styles.inventarioItem}>
-                                        <span>
-                                            {item.nombre}
-                                            {item.es_arma && <span className={styles.armaTag}>⚔️ {item.dado_dano} ({item.atributo})</span>}
-                                        </span>
+                                        <span>{item.nombre}{item.es_arma && <span className={styles.armaTag}>⚔️ {item.dado_dano} ({item.atributo})</span>}</span>
                                         <button onClick={() => eliminarInventario(i)}>✕</button>
                                     </li>
                                 ))}
@@ -468,21 +404,16 @@ const CrearPersonaje = () => {
                     </div>
                 )}
 
-                {/* Navegación entre pasos */}
                 <div className={styles.navegacion}>
                     {pasoActual > 0 && (
-                        <button className={styles.botonSecundario} onClick={() => setPasoActual(pasoActual - 1)}>
-                            ← Anterior
-                        </button>
+                        <button className={styles.botonSecundario} onClick={() => setPasoActual(pasoActual - 1)}>← Anterior</button>
                     )}
                     {pasoActual < PASOS.length - 1 && (
-                        <button className={styles.botonPrimario} onClick={() => setPasoActual(pasoActual + 1)}>
-                            Siguiente →
-                        </button>
+                        <button className={styles.botonPrimario} onClick={() => setPasoActual(pasoActual + 1)}>Siguiente →</button>
                     )}
                     {pasoActual === PASOS.length - 1 && (
                         <button className={styles.botonPrimario} onClick={handleSubmit} disabled={cargando}>
-                            {cargando ? 'Creando...' : 'Crear personaje'}
+                            {cargando ? 'Creando...' : 'Crear NPC'}
                         </button>
                     )}
                 </div>
@@ -491,4 +422,4 @@ const CrearPersonaje = () => {
     );
 };
 
-export default CrearPersonaje;
+export default CrearNpc;

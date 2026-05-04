@@ -17,3 +17,6 @@ export const eliminarPersonajeRequest = (id) => api.delete(`/personajes/${id}`);
 
 // Obtiene los sistemas disponibles
 export const getSistemasRequest = () => api.get('/personajes/sistemas');
+
+// Sube el nivel del personaje
+export const subirNivelRequest = (id, datos) => api.put(`/personajes/${id}/subir-nivel`, { datos });

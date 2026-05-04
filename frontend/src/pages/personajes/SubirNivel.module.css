@@ -1,0 +1,285 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cargando {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 4rem 0;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botonVolver {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.botonVolver:hover {
+    color: var(--accent-primary);
+}
+
+.infoPersonaje {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+}
+
+.nombre {
+    font-family: var(--font-titulo);
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+}
+
+.clase {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.bonComp {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.progreso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pasoWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.pasoBola {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.pasoActivo {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.pasoCompletado {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+.pasoLabel {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0 0.75rem;
+}
+
+.pasoLabelActivo {
+    color: var(--accent-primary);
+}
+
+.pasoLinea {
+    width: 60px;
+    height: 2px;
+    background-color: var(--border);
+    transition: background-color 0.2s;
+}
+
+.pasoLineaCompletada {
+    background-color: var(--accent-primary);
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.paso {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.paso h2 {
+    font-size: 1.3rem;
+}
+
+.descripcion {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.gridAtributos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.atributo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+.atributo label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: capitalize;
+}
+
+.inputNumero {
+    width: 70px;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.inputNumero:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.modificador {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.gridVida {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.campo label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.input {
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.subclase {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--accent-secondary);
+    border-radius: var(--radius-md);
+}
+
+.subclase h3 {
+    font-size: 1rem;
+    color: var(--accent-secondary);
+}
+
+.navegacion {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.botonPrimario {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botonPrimario:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.botonPrimario:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.botonSecundario {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.botonSecundario:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.error {
+    color: var(--error);
+    font-size: 0.9rem;
+}

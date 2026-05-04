@@ -11,6 +11,7 @@ router.get('/', verificarToken, personajeController.getPersonajes);
 router.get('/:id', verificarToken, personajeController.getPersonaje);
 router.post('/', verificarToken, personajeController.crearPersonaje);
 router.put('/:id', verificarToken, personajeController.editarPersonaje);
+router.put('/:id/subir-nivel', verificarToken, personajeController.subirNivel);
 router.delete('/:id', verificarToken, personajeController.eliminarPersonaje);
 
 module.exports = router;
