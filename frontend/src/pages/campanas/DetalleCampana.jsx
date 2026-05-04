@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getCampanaRequest, getPersonajesDeCampanaRequest, asociarPersonajeRequest, desasociarPersonajeRequest, getParticipantesRequest, getNpcsDeCampanaRequest, crearNpcRequest, toggleVisibilidadNpcRequest, toggleNpcsVisiblesRequest, eliminarNpcRequest } from '../../services/campanaService';
+import { getCampanaRequest, getPersonajesDeCampanaRequest, asociarPersonajeRequest, desasociarPersonajeRequest, getParticipantesRequest, getNpcsDeCampanaRequest, crearNpcRequest, toggleVisibilidadNpcRequest, toggleNpcsVisiblesRequest, eliminarNpcRequest, editarNpcRequest } from '../../services/campanaService';
 import { getPersonajesRequest } from '../../services/personajeService';
 import { useAuth } from '../../context/AuthContext';
 import styles from './DetalleCampana.module.css';
 import DiceRoller from '../../components/dice/DiceRoller';
 import DiceHistory from '../../components/dice/DiceHistory';
+import ImageUpload from '../../components/ui/ImagenUpload';
 
 const DetalleCampana = () => {
     const [campana, setCampana] = useState(null);
@@ -21,12 +22,16 @@ const DetalleCampana = () => {
 
     const [npcs, setNpcs] = useState([]);
     const [modalNpc, setModalNpc] = useState(false);
-    const [formNpc, setFormNpc] = useState({ nombre: '', descripcion: '' });
+    const [formNpc, setFormNpc] = useState({ nombre: '', descripcion: '', imagen_url: '' });
     const [npcConFicha, setNpcConFicha] = useState(false);
     const [npcSeleccionado, setNpcSeleccionado] = useState(null);
+    const [npcEditando, setNpcEditando] = useState(null);
+    const [formEditNpc, setFormEditNpc] = useState({ nombre: '', descripcion: '', imagen_url: '' });
 
     const [refreshTiradas, setRefreshTiradas] = useState(0);
-    
+
+
+
     const cargarNpcs = async () => {
         try {
             const res = await getNpcsDeCampanaRequest(id);
@@ -299,7 +304,11 @@ const DetalleCampana = () => {
                                             style={{ cursor: 'pointer' }}
                                         >
                                             <div className={styles.personajeAvatar}>
-                                                {npc.nombre.slice(0, 2).toUpperCase()}
+                                                {npc.imagen_url ? (
+                                                    <img src={npc.imagen_url} alt={npc.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                                                ) : (
+                                                    npc.nombre.slice(0, 2).toUpperCase()
+                                                )}
                                             </div>
                                             <div className={styles.personajeInfo}>
                                                 <span className={styles.personajeNombre}>{npc.nombre}</span>
@@ -307,7 +316,16 @@ const DetalleCampana = () => {
                                             </div>
                                             {esMaster && (
                                                 <div className={styles.npcAcciones}>
-                                                    <label className={styles.toggle}>
+                                                    {!npc.sistema && (
+                                                        <button className={styles.botonEditar} onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setNpcEditando(npc);
+                                                            setFormEditNpc({ nombre: npc.nombre, descripcion: npc.descripcion || '', imagen_url: npc.imagen_url || '' });
+                                                        }}>
+                                                            Editar
+                                                        </button>
+                                                    )}
+                                                    <label className={styles.toggle} onClick={e => e.stopPropagation()}>
                                                         <input
                                                             type="checkbox"
                                                             checked={npc.visible}
@@ -320,7 +338,8 @@ const DetalleCampana = () => {
                                                         <span className={styles.toggleSlider}></span>
                                                     </label>
                                                     <span className={styles.visibilidadLabel}>{npc.visible ? 'Visible' : 'Oculto'}</span>
-                                                    <button className={styles.botonDesasociar} onClick={async () => {
+                                                    <button className={styles.botonDesasociar} onClick={async (e) => {
+                                                        e.stopPropagation();
                                                         await eliminarNpcRequest(id, npc.id);
                                                         cargarNpcs();
                                                     }}>
@@ -339,7 +358,6 @@ const DetalleCampana = () => {
                             <div className={styles.modalOverlay} onClick={() => setModalNpc(false)}>
                                 <div className={styles.modal} onClick={e => e.stopPropagation()}>
                                     <h2>Crear NPC</h2>
-
                                     <div className={styles.campo}>
                                         <label>Nombre</label>
                                         <input
@@ -360,7 +378,6 @@ const DetalleCampana = () => {
                                             placeholder="Descripción del NPC..."
                                         />
                                     </div>
-
                                     <label className={styles.checkLabel}>
                                         <input
                                             type="checkbox"
@@ -369,7 +386,12 @@ const DetalleCampana = () => {
                                         />
                                         Crear NPC con ficha completa
                                     </label>
-
+                                    <div className={styles.campo}>
+                                        <label>Imagen</label>
+                                        <ImageUpload
+                                            onImagenSubida={(url) => setFormNpc(prev => ({ ...prev, imagen_url: url }))}
+                                        />
+                                    </div>
                                     <div className={styles.modalBotones}>
                                         <button className={styles.botonSecundario} onClick={() => {
                                             setModalNpc(false);
@@ -380,7 +402,6 @@ const DetalleCampana = () => {
                                         <button className={styles.botonPrimario} onClick={async () => {
                                             if (!formNpc.nombre.trim()) return;
                                             if (npcConFicha) {
-                                                // Redirigimos a una página de crear NPC con ficha
                                                 navigate(`/campanas/${id}/npcs/crear`);
                                             } else {
                                                 await crearNpcRequest(id, formNpc);
@@ -396,14 +417,65 @@ const DetalleCampana = () => {
                                 </div>
                             </div>
                         )}
+
+                        {/* Modal ver NPC simple */}
                         {npcSeleccionado && (
                             <div className={styles.modalOverlay} onClick={() => setNpcSeleccionado(null)}>
                                 <div className={styles.modal} onClick={e => e.stopPropagation()}>
+                                    {npcSeleccionado.imagen_url && (
+                                        <img src={npcSeleccionado.imagen_url} alt={npcSeleccionado.nombre} style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 'var(--radius-md)', marginBottom: '0.5rem' }} />
+                                    )}
                                     <h2>{npcSeleccionado.nombre}</h2>
                                     <p>{npcSeleccionado.descripcion || 'Sin descripción.'}</p>
                                     <button className={styles.botonSecundario} onClick={() => setNpcSeleccionado(null)}>
                                         Cerrar
                                     </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Modal editar NPC simple */}
+                        {npcEditando && (
+                            <div className={styles.modalOverlay} onClick={() => setNpcEditando(null)}>
+                                <div className={styles.modal} onClick={e => e.stopPropagation()}>
+                                    <h2>Editar NPC</h2>
+                                    <div className={styles.campo}>
+                                        <label>Nombre</label>
+                                        <input
+                                            type="text"
+                                            value={formEditNpc.nombre}
+                                            onChange={e => setFormEditNpc({ ...formEditNpc, nombre: e.target.value })}
+                                            className={styles.input}
+                                            placeholder="Nombre del NPC..."
+                                        />
+                                    </div>
+                                    <div className={styles.campo}>
+                                        <label>Descripción</label>
+                                        <textarea
+                                            value={formEditNpc.descripcion}
+                                            onChange={e => setFormEditNpc({ ...formEditNpc, descripcion: e.target.value })}
+                                            className={styles.textarea}
+                                            rows={3}
+                                            placeholder="Descripción del NPC..."
+                                        />
+                                    </div>
+                                    <div className={styles.campo}>
+                                        <label>Imagen</label>
+                                        <ImageUpload
+                                            imagenActual={formEditNpc.imagen_url}
+                                            onImagenSubida={(url) => setFormEditNpc(prev => ({ ...prev, imagen_url: url }))}
+                                        />
+                                    </div>
+                                    <div className={styles.modalBotones}>
+                                        <button className={styles.botonSecundario} onClick={() => setNpcEditando(null)}>Cancelar</button>
+                                        <button className={styles.botonPrimario} onClick={async () => {
+                                            await editarNpcRequest(id, npcEditando.id, formEditNpc);
+                                            setNpcEditando(null);
+                                            cargarNpcs();
+                                        }}>
+                                            Guardar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         )}

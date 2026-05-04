@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import { FaDiscord, FaTwitter, FaInstagram } from 'react-icons/fa';
 import styles from './Footer.module.css';
+import { GiDiceTwentyFacesTwenty } from 'react-icons/gi';
 
 const Footer = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.contenido}>
                 <div className={styles.marca}>
-                    <h3>🎲 TodoRol</h3>
+                    <Link to="/"><GiDiceTwentyFacesTwenty /> TodoRol</Link>
                     <p>Tu plataforma de rol en español. Gestiona campañas, personajes y partidas en un solo lugar.</p>
                 </div>
 

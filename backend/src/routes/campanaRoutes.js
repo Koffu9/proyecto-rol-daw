@@ -25,5 +25,6 @@ router.post('/:id/npcs', verificarToken, campanaController.crearNpc);
 router.put('/:id/npcs/:id_npc/visibilidad', verificarToken, campanaController.toggleVisibilidadNpc);
 router.put('/:id/npcs-visibles', verificarToken, campanaController.toggleNpcsVisibles);
 router.delete('/:id/npcs/:id_npc', verificarToken, campanaController.eliminarNpc);
+router.put('/:id/npcs/:id_npc', verificarToken, campanaController.editarNpc);
 
 module.exports = router;

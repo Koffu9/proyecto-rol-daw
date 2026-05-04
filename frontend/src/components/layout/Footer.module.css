@@ -19,6 +19,16 @@
     color: var(--accent-primary);
     margin-bottom: 0.75rem;
 }
+.marca a {
+    font-family: var(--font-titulo);
+    font-size: 1.4rem;
+    color: var(--accent-primary);
+    text-decoration: none;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
 .marca p {
     color: var(--text-secondary);

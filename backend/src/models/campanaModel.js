@@ -134,10 +134,10 @@ const getNpcsByCampana = async (id_campana) => {
 };
 
 // Crea un NPC simple sin ficha
-const crearNpc = async (nombre, descripcion, id_usuario, id_campana) => {
+const crearNpc = async (nombre, descripcion, id_usuario, id_campana, imagen_url) => {
     const [result] = await db.query(
-        'INSERT INTO personaje (nombre, descripcion, id_usuario, id_campana, es_npc, visible) VALUES (?, ?, ?, ?, TRUE, TRUE)',
-        [nombre, descripcion, id_usuario, id_campana]
+        'INSERT INTO personaje (nombre, descripcion, id_usuario, id_campana, es_npc, visible, imagen_url) VALUES (?, ?, ?, ?, TRUE, TRUE, ?)',
+        [nombre, descripcion, id_usuario, id_campana, imagen_url || null]
     );
     return result;
 };
@@ -169,4 +169,14 @@ const eliminarNpc = async (id) => {
     return result;
 };
 
-module.exports = { crearCampana, getCampanasByUsuario, getCampanaById, editarCampana, eliminarCampana, agregarParticipante, getCampanaByCodigoInvitacion, getParticipantesByCampana, isParticipante, getPersonajesByCampana, asociarPersonajeACampana, desasociarPersonajeDeCampana, getNpcsByCampana, eliminarNpc, toggleNpcsVisibles, toggleVisibilidadNpc, crearNpc };
+// Edita un NPC simple
+const editarNpc = async (id, nombre, descripcion, imagen_url) => {
+    const [result] = await db.query(
+        'UPDATE personaje SET nombre = ?, descripcion = ?, imagen_url = ? WHERE id = ? AND es_npc = TRUE',
+        [nombre, descripcion, imagen_url || null, id]
+    );
+    return result;
+};
+
+
+module.exports = { crearCampana, getCampanasByUsuario, getCampanaById, editarCampana, eliminarCampana, agregarParticipante, getCampanaByCodigoInvitacion, getParticipantesByCampana, isParticipante, getPersonajesByCampana, asociarPersonajeACampana, desasociarPersonajeDeCampana, getNpcsByCampana, eliminarNpc, toggleNpcsVisibles, toggleVisibilidadNpc, crearNpc, editarNpc };

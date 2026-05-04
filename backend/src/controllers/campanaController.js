@@ -193,7 +193,7 @@ const getNpcsDeCampana = async (req, res) => {
 // Crea un NPC en una campaña
 const crearNpc = async (req, res) => {
     const { id } = req.params;
-    const { nombre, descripcion } = req.body;
+    const { nombre, descripcion, imagen_url } = req.body;
     const id_usuario = req.usuario.id;
 
     try {
@@ -201,7 +201,7 @@ const crearNpc = async (req, res) => {
         if (!campana) return res.status(404).json({ error: 'Campaña no encontrada' });
         if (campana.id_master !== id_usuario) return res.status(403).json({ error: 'Solo el máster puede crear NPCs' });
 
-        const result = await campanaModel.crearNpc(nombre, descripcion, id_usuario, id);
+        const result = await campanaModel.crearNpc(nombre, descripcion, id_usuario, id, imagen_url);
         res.status(201).json({ mensaje: 'NPC creado correctamente', id: result.insertId });
     } catch (error) {
         console.error(error);
@@ -265,4 +265,28 @@ const eliminarNpc = async (req, res) => {
     }
 };
 
-module.exports = { crearCampana, getCampanas, getCampana, editarCampana, eliminarCampana, unirseACampana, getParticipantesDeCampana, getPersonajesDeCampana, asociarPersonaje, desasociarPersonaje, eliminarNpc, toggleNpcsVisibles, getNpcsDeCampana, toggleVisibilidadNpc, crearNpc};
+// Edita un NPC simple
+const editarNpc = async (req, res) => {
+    const { id, id_npc } = req.params;
+    const { nombre, descripcion, imagen_url } = req.body;
+    const id_usuario = req.usuario.id;
+
+    try {
+        const campana = await campanaModel.getCampanaById(id);
+        if (!campana) return res.status(404).json({ error: 'Campaña no encontrada' });
+        if (campana.id_master !== id_usuario) return res.status(403).json({ error: 'Solo el máster puede editar NPCs' });
+
+        await campanaModel.editarNpc(id_npc, nombre, descripcion, imagen_url);
+        res.json({ mensaje: 'NPC editado correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
+module.exports = { 
+    crearCampana, getCampanas, getCampana, editarCampana, eliminarCampana, 
+    unirseACampana, getPersonajesDeCampana, asociarPersonaje, desasociarPersonaje,
+    getParticipantesDeCampana, getNpcsDeCampana, crearNpc, toggleVisibilidadNpc,
+    toggleNpcsVisibles, eliminarNpc, editarNpc
+};

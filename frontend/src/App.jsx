@@ -17,6 +17,7 @@ import CrearNpc from './pages/campanas/CrearNpc';
 import EditarPersonaje from './pages/personajes/EditarPersonaje';
 import Perfil from './pages/Perfil';
 import Juegos from './pages/Juegos';
+import NotFound from './pages/NotFound';
 
 const ProtectedRoute = ({ children }) => {
   const { usuario, cargando } = useAuth();
@@ -38,7 +39,11 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           // Rutas
-          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/" element={
+            <PublicRoute>
+              <Layout><Home /></Layout>
+            </PublicRoute>
+          } />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
@@ -58,9 +63,12 @@ const App = () => {
           <Route path="/personajes/:id/editar" element={<ProtectedRoute><Layout><EditarPersonaje /></Layout></ProtectedRoute>} />
 
           <Route path="/juegos" element={<ProtectedRoute><Layout><Juegos /></Layout></ProtectedRoute>} />
-          
+
           // Rutas Perfil
           <Route path="/perfil" element={<ProtectedRoute><Layout><Perfil /></Layout></ProtectedRoute>} />
+
+          //Error 404
+          <Route path="*" element={<Layout><NotFound /></Layout>} />
 
         </Routes>
       </BrowserRouter>

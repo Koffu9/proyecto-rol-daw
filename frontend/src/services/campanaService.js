@@ -36,3 +36,4 @@ export const crearNpcRequest = (id, datos) => api.post(`/campanas/${id}/npcs`, d
 export const toggleVisibilidadNpcRequest = (id_campana, id_npc, visible) => api.put(`/campanas/${id_campana}/npcs/${id_npc}/visibilidad`, { visible });
 export const toggleNpcsVisiblesRequest = (id_campana, npcs_visibles) => api.put(`/campanas/${id_campana}/npcs-visibles`, { npcs_visibles });
 export const eliminarNpcRequest = (id_campana, id_npc) => api.delete(`/campanas/${id_campana}/npcs/${id_npc}`);
+export const editarNpcRequest = (id_campana, id_npc, datos) => api.put(`/campanas/${id_campana}/npcs/${id_npc}`, datos);
