@@ -3,17 +3,16 @@ const { v4: uuidv4 } = require('uuid');
 
 // Crea una nueva campaña y añade al creador como máster en la tabla participa
 const crearCampana = async (req, res) => {
-    const { titulo, descripcion } = req.body;
+    const { titulo, descripcion, mapa_url } = req.body;
     const id_master = req.usuario.id;
-
+    console.log('Body recibido:', req.body);
+    console.log('mapa_url:', mapa_url);
     try {
-        // Generamos un código de invitación único
         const codigo_invitacion = uuidv4().slice(0, 8).toUpperCase();
 
-        const result = await campanaModel.crearCampana(titulo, descripcion, codigo_invitacion, id_master);
+        const result = await campanaModel.crearCampana(titulo, descripcion, codigo_invitacion, id_master, mapa_url);
         const id_campana = result.insertId;
 
-        // Añadimos al creador como máster en la tabla participa
         await campanaModel.agregarParticipante(id_campana, id_master, 'master');
 
         res.status(201).json({ mensaje: 'Campaña creada correctamente', id: id_campana, codigo_invitacion });
@@ -55,7 +54,7 @@ const getCampana = async (req, res) => {
 // Edita una campaña, solo si el usuario es el máster
 const editarCampana = async (req, res) => {
     const { id } = req.params;
-    const { titulo, descripcion, npcs_visibles } = req.body;
+    const { titulo, descripcion, npcs_visibles, mapa_url } = req.body;
     const id_usuario = req.usuario.id;
 
     try {
@@ -63,9 +62,8 @@ const editarCampana = async (req, res) => {
         if (!campana) return res.status(404).json({ error: 'Campaña no encontrada' });
         if (campana.id_master !== id_usuario) return res.status(403).json({ error: 'No tienes permisos para editar esta campaña' });
 
-        await campanaModel.editarCampana(id, titulo, descripcion, npcs_visibles);
+        await campanaModel.editarCampana(id, titulo, descripcion, npcs_visibles ?? campana.npcs_visibles, mapa_url ?? campana.mapa_url);
         res.json({ mensaje: 'Campaña editada correctamente' });
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error interno del servidor' });

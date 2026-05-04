@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
 // Crea un nuevo personaje
-const crearPersonaje = async (nombre, descripcion, id_usuario, id_campana, es_npc = false) => {
+const crearPersonaje = async (nombre, descripcion, id_usuario, id_campana, es_npc = false, imagen_url = null) => {
     const [result] = await db.query(
-        'INSERT INTO personaje (nombre, descripcion, id_usuario, id_campana, es_npc) VALUES (?, ?, ?, ?, ?)',
-        [nombre, descripcion, id_usuario, id_campana, es_npc]
+        'INSERT INTO personaje (nombre, descripcion, id_usuario, id_campana, es_npc, imagen_url) VALUES (?, ?, ?, ?, ?, ?)',
+        [nombre, descripcion, id_usuario, id_campana, es_npc, imagen_url]
     );
     return result;
 };
@@ -52,10 +52,10 @@ const guardarFicha = async (id_personaje, sistema, datos) => {
 };
 
 // Edita los datos básicos de un personaje
-const editarPersonaje = async (id, nombre, descripcion) => {
+const editarPersonaje = async (id, nombre, descripcion, imagen_url) => {
     const [result] = await db.query(
-        'UPDATE personaje SET nombre = ?, descripcion = ? WHERE id = ?',
-        [nombre, descripcion, id]
+        'UPDATE personaje SET nombre = ?, descripcion = ?, imagen_url = ? WHERE id = ?',
+        [nombre, descripcion, imagen_url || null, id]
     );
     return result;
 };

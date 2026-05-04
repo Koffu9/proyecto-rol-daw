@@ -31,11 +31,11 @@ const getPersonaje = async (req, res) => {
 
 // Crea un nuevo personaje y su ficha
 const crearPersonaje = async (req, res) => {
-    const { nombre, descripcion, id_campana, es_npc, sistema, datos } = req.body;
+    const { nombre, descripcion, id_campana, es_npc, imagen_url, sistema, datos } = req.body;
     const id_usuario = req.usuario.id;
 
     try {
-        const result = await personajeModel.crearPersonaje(nombre, descripcion, id_usuario, id_campana || null, es_npc || false);
+        const result = await personajeModel.crearPersonaje(nombre, descripcion, id_usuario, id_campana || null, es_npc || false, imagen_url || null);
         const id_personaje = result.insertId;
 
         if (sistema && datos) {
@@ -52,7 +52,7 @@ const crearPersonaje = async (req, res) => {
 // Edita los datos básicos de un personaje y su ficha
 const editarPersonaje = async (req, res) => {
     const { id } = req.params;
-    const { nombre, descripcion, sistema, datos } = req.body;
+    const { nombre, descripcion, imagen_url, sistema, datos } = req.body;
     const id_usuario = req.usuario.id;
 
     try {
@@ -60,7 +60,7 @@ const editarPersonaje = async (req, res) => {
         if (!personaje) return res.status(404).json({ error: 'Personaje no encontrado' });
         if (personaje.id_usuario !== id_usuario) return res.status(403).json({ error: 'No tienes permisos para editar este personaje' });
 
-        await personajeModel.editarPersonaje(id, nombre, descripcion);
+        await personajeModel.editarPersonaje(id, nombre, descripcion, imagen_url);
 
         if (sistema && datos) {
             await personajeModel.guardarFicha(id, sistema, datos);

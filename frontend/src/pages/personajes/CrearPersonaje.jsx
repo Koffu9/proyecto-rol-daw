@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { crearPersonajeRequest } from '../../services/personajeService';
 import styles from './CrearPersonaje.module.css';
 import { RAZAS, CLASES } from '../../constants/dnd';
+import ImageUpload from '../../components/ui/ImagenUpload';
 
 const PASOS = ['Info básica', 'Atributos', 'Combate', 'Competencias', 'Equipo y trasfondo'];
 
@@ -15,6 +16,7 @@ const CrearPersonaje = () => {
     const [form, setForm] = useState({
         // Info básica
         nombre: '',
+        imagen_url: '',
         descripcion: '',
         clase: '',
         raza: '',
@@ -48,7 +50,7 @@ const CrearPersonaje = () => {
         // Equipo y trasfondo
         equipo: {
             inventario: [],
-            monedas: { po: 0, pp: 0, pc: 0}
+            monedas: { po: 0, pp: 0, pc: 0 }
         },
         trasfondo_rp: {
             rasgos_personalidad: '',
@@ -116,6 +118,7 @@ const CrearPersonaje = () => {
             await crearPersonajeRequest({
                 nombre: form.nombre,
                 descripcion: form.descripcion,
+                imagen_url: form.imagen_url,
                 sistema: 'dnd',
                 datos: {
                     clase: form.clase,
@@ -281,7 +284,14 @@ const CrearPersonaje = () => {
                             <label>Descripción</label>
                             <textarea name="descripcion" value={form.descripcion} onChange={handleChange} className={styles.textarea} rows={3} placeholder="Descripción del personaje..." />
                         </div>
+                        <div className={styles.campo}>
+                            <label>Imagen del personaje</label>
+                            <ImageUpload
+                                onImagenSubida={(url) => setForm(prev => ({ ...prev, imagen_url: url }))}
+                            />
+                        </div>
                     </div>
+
                 )}
 
                 {/* Paso 2 - Atributos */}

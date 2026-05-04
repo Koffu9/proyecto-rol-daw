@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { crearCampanaRequest } from '../../services/campanaService';
 import styles from './CrearCampana.module.css';
+import ImageUpload from '../../components/ui/ImagenUpload';
 
 const CrearCampana = () => {
-    const [form, setForm] = useState({ titulo: '', descripcion: '' });
+    const [form, setForm] = useState({ titulo: '', descripcion: '', mapa_url: '' });
     const [error, setError] = useState('');
     const [cargando, setCargando] = useState(false);
     const navigate = useNavigate();
@@ -60,6 +61,12 @@ const CrearCampana = () => {
                             onChange={handleChange}
                             className={styles.textarea}
                             rows={5}
+                        />
+                    </div>
+                    <div className={styles.campo}>
+                        <label>Imagen de portada</label>
+                        <ImageUpload
+                            onImagenSubida={(url) => setForm(prev => ({ ...prev, mapa_url: url }))}
                         />
                     </div>
                     <div className={styles.botones}>

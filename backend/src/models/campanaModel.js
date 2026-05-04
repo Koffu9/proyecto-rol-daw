@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
 // Crea una nueva campaña en la base de datos
-const crearCampana = async (titulo, descripcion, codigo_invitacion, id_master) => {
+const crearCampana = async (titulo, descripcion, codigo_invitacion, id_master, mapa_url) => {
     const [result] = await db.query(
-        'INSERT INTO campana (titulo, descripcion, codigo_invitacion, id_master) VALUES (?, ?, ?, ?)',
-        [titulo, descripcion, codigo_invitacion, id_master]
+        'INSERT INTO campana (titulo, descripcion, codigo_invitacion, id_master, mapa_url) VALUES (?, ?, ?, ?, ?)',
+        [titulo, descripcion, codigo_invitacion, id_master, mapa_url || null]
     );
     return result;
 };
@@ -30,10 +30,10 @@ const getCampanaById = async (id) => {
 };
 
 // Edita el título, descripción y visibilidad de npcs de una campaña
-const editarCampana = async (id, titulo, descripcion, npcs_visibles) => {
+const editarCampana = async (id, titulo, descripcion, npcs_visibles, mapa_url) => {
     const [result] = await db.query(
-        'UPDATE campana SET titulo = ?, descripcion = ?, npcs_visibles = ? WHERE id = ?',
-        [titulo, descripcion, npcs_visibles, id]
+        'UPDATE campana SET titulo = ?, descripcion = ?, npcs_visibles = ?, mapa_url = ? WHERE id = ?',
+        [titulo, descripcion, npcs_visibles, mapa_url, id]
     );
     return result;
 };

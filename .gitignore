@@ -22,3 +22,8 @@ Thumbs.db
 .idea/
 
 coverage/
+
+//Fotos
+
+backend/uploads/*
+!backend/uploads/.gitkeep

@@ -31,4 +31,11 @@ app.use('/api/personajes', personajeRoutes);
 const tiradaRoutes = require('./routes/tiradaRoutes');
 app.use('/api/tiradas', tiradaRoutes);
 
+const path = require('path');
+// Servir archivos estáticos de uploads
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+const uploadRoutes = require('./routes/uploadRoutes');
+app.use('/api/upload', uploadRoutes);
+
 module.exports = app;

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCampanaRequest, editarCampanaRequest } from '../../services/campanaService';
+import ImageUpload from '../../components/ui/ImagenUpload';
 import styles from './CrearCampana.module.css';
 
 const EditarCampana = () => {
-    const [form, setForm] = useState({ titulo: '', descripcion: '' });
+    const [form, setForm] = useState({ titulo: '', descripcion: '', mapa_url: '' });
     const [error, setError] = useState('');
     const [cargando, setCargando] = useState(false);
     const navigate = useNavigate();
@@ -17,7 +18,11 @@ const EditarCampana = () => {
     const cargarCampana = async () => {
         try {
             const res = await getCampanaRequest(id);
-            setForm({ titulo: res.data.titulo, descripcion: res.data.descripcion || '' });
+            setForm({ 
+                titulo: res.data.titulo, 
+                descripcion: res.data.descripcion || '',
+                mapa_url: res.data.mapa_url || ''
+            });
         } catch (error) {
             console.error(error);
         }
@@ -74,6 +79,13 @@ const EditarCampana = () => {
                             onChange={handleChange}
                             className={styles.textarea}
                             rows={5}
+                        />
+                    </div>
+                    <div className={styles.campo}>
+                        <label>Imagen de portada</label>
+                        <ImageUpload
+                            imagenActual={form.mapa_url}
+                            onImagenSubida={(url) => setForm(prev => ({ ...prev, mapa_url: url }))}
                         />
                     </div>
                     <div className={styles.botones}>
