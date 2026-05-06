@@ -48,7 +48,8 @@ const login = async (req, res) => {
             usuario: {
                 id: usuario.id,
                 nombre_usuario: usuario.nombre_usuario,
-                email: usuario.email
+                email: usuario.email,
+                imagen_url: usuario.imagen_url || null
             }
         });
     } catch (error) {

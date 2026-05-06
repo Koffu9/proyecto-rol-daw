@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { registerRequest, loginRequest } from '../../services/authService';
 import styles from './Register.module.css';
+import AuthLogo from '../../components/auth/AuthLogo';
 
 const Register = () => {
     const [form, setForm] = useState({ nombre_usuario: '', email: '', password: '', confirmar_password: '' });
@@ -35,6 +36,7 @@ const Register = () => {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
+                <AuthLogo />
                 <h1 className={styles.titulo}>Crear cuenta</h1>
                 {error && <p className={styles.error}>{error}</p>}
                 <form onSubmit={handleSubmit} className={styles.form}>

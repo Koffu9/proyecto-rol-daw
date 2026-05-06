@@ -7,11 +7,10 @@ const CampanaCard = ({ campana, onEliminar }) => {
     return (
         <div className={styles.card} onClick={() => navigate(`/campanas/${campana.id}`)}>
             <div className={styles.imagen}>
-                {campana.mapa_url ? (
-                    <img src={campana.mapa_url} alt={campana.titulo} />
-                ) : (
-                    <div className={styles.imagenPlaceholder}><GiDiceTwentyFacesTwenty /></div>
-                )}
+                <img
+                    src={campana.mapa_url || '../../public/default-campana.jfif'}
+                    alt={campana.titulo}
+                />
             </div>
             <div className={styles.contenido}>
                 <h3>{campana.titulo}</h3>

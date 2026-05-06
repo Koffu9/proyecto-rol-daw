@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import { realizarTiradaRequest } from '../../services/tiradaService';
 import styles from './DiceRoller.module.css';
+import { GiDiceTwentyFacesTwenty } from 'react-icons/gi';
 
 const DADOS_RAPIDOS = ['1d4', '1d6', '1d8', '1d10', '1d12', '1d20', '1d100'];
 
-const DiceRoller = ({ id_personaje, id_campana, onTirada }) => {
+const DiceRoller = ({ id_personaje, id_campana, onTirada, personajes = [], npcs = [], esMaster = false }) => {
     const [formula, setFormula] = useState('');
     const [resultado, setResultado] = useState(null);
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState('');
+    const [personajeSeleccionado, setPersonajeSeleccionado] = useState('');
+
+    const getIdPersonaje = () => {
+        if (personajeSeleccionado) return parseInt(personajeSeleccionado);
+        return id_personaje;
+    };
 
     const tirar = async (formulaUsada) => {
         const f = formulaUsada || formula;
@@ -16,7 +23,7 @@ const DiceRoller = ({ id_personaje, id_campana, onTirada }) => {
         setCargando(true);
         setError('');
         try {
-            const res = await realizarTiradaRequest(f, id_personaje, id_campana);
+            const res = await realizarTiradaRequest(f, getIdPersonaje(), id_campana);
             setResultado(res.data);
             if (onTirada) onTirada(res.data);
         } catch (err) {
@@ -26,9 +33,35 @@ const DiceRoller = ({ id_personaje, id_campana, onTirada }) => {
         }
     };
 
+    // Opciones del desplegable según rol
+    const opciones = esMaster
+        ? npcs.map(n => ({ id: n.id, label: `🎭 ${n.nombre}` }))
+        : personajes.length > 1
+            ? personajes.map(p => ({ id: p.id, label: ` ${p.nombre}` }))
+            : [];
+
     return (
         <div className={styles.container}>
             <h3 className={styles.titulo}>Tirador de dados</h3>
+
+            {/* Selector de personaje/NPC */}
+            {opciones.length > 0 && (
+                <div className={styles.selectorPersonaje}>
+                    <label className={styles.selectorLabel}>
+                        {esMaster ? 'Tirar como NPC' : 'Tirar como personaje'}
+                    </label>
+                    <select
+                        className={styles.selector}
+                        value={personajeSeleccionado}
+                        onChange={e => setPersonajeSeleccionado(e.target.value)}
+                    >
+                        <option value="">— Yo mismo —</option>
+                        {opciones.map(o => (
+                            <option key={o.id} value={o.id}>{o.label}</option>
+                        ))}
+                    </select>
+                </div>
+            )}
 
             {/* Dados rápidos */}
             <div className={styles.dadosRapidos}>
@@ -53,13 +86,12 @@ const DiceRoller = ({ id_personaje, id_campana, onTirada }) => {
                     placeholder="Ej: 2d6+3, 1d20+5..."
                 />
                 <button className={styles.botonTirar} onClick={() => tirar()} disabled={cargando}>
-                    {cargando ? '...' : '🎲 Tirar'}
+                    {cargando ? '...' : <><GiDiceTwentyFacesTwenty /> Tirar</>}
                 </button>
             </div>
 
             {error && <p className={styles.error}>{error}</p>}
 
-            {/* Resultado */}
             {resultado && (
                 <div className={styles.resultado}>
                     <div className={styles.resultadoTotal}>

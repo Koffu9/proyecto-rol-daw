@@ -7,6 +7,9 @@ import { getCampanasRequest } from '../services/campanaService';
 import { getPersonajesRequest } from '../services/personajeService';
 import { getTiradasUsuarioRequest } from '../services/tiradaService';
 import styles from './Dashboard.module.css';
+import { GiCrossedSwords, GiWizardStaff, GiBookCover, GiCharacter, GiScrollUnfurled, GiDungeonGate, GiTreasureMap, GiAncientSword, GiImperialCrown } from 'react-icons/gi';
+import DiceHistory from '../components/dice/DiceHistory';
+import { FaChessKnight } from 'react-icons/fa';
 
 const Dashboard = () => {
     const [campanas, setCampanas] = useState([]);
@@ -54,19 +57,19 @@ const Dashboard = () => {
             {/* Accesos rápidos */}
             <div className={styles.accesosRapidos}>
                 <button className={styles.accesoBoton} onClick={() => navigate('/campanas/crear')}>
-                    <span className={styles.accesoIcono}>⚔️</span>
+                    <GiCrossedSwords className={styles.accesoIcono} />
                     <span>Crear campaña</span>
                 </button>
                 <button className={styles.accesoBoton} onClick={() => navigate('/personajes/crear')}>
-                    <span className={styles.accesoIcono}>🧙</span>
+                    <GiWizardStaff className={styles.accesoIcono} />
                     <span>Crear personaje</span>
                 </button>
                 <button className={styles.accesoBoton} onClick={() => navigate('/campanas')}>
-                    <span className={styles.accesoIcono}>📖</span>
+                    <GiBookCover className={styles.accesoIcono} />
                     <span>Mis campañas</span>
                 </button>
                 <button className={styles.accesoBoton} onClick={() => navigate('/personajes')}>
-                    <span className={styles.accesoIcono}>👤</span>
+                    <GiCharacter className={styles.accesoIcono} />
                     <span>Mis personajes</span>
                 </button>
             </div>
@@ -84,11 +87,19 @@ const Dashboard = () => {
                         <div className={styles.lista}>
                             {campanas.map(c => (
                                 <div key={c.id} className={styles.item} onClick={() => navigate(`/campanas/${c.id}`)}>
-                                    <div className={styles.itemIcono}>🎲</div>
+                                    <div className={styles.itemIcono}>
+                                        <GiDungeonGate />
+                                    </div>
+                                    <div className={styles.itemIcono}>
+                                        <GiScrollUnfurled />
+                                    </div>
                                     <div className={styles.itemInfo}>
                                         <span className={styles.itemNombre}>{c.titulo}</span>
                                         <span className={styles.itemMeta}>
-                                            {c.id_master === usuario.id ? '👑 Máster' : '🎲 Jugador'}
+                                            {c.id_master === usuario.id
+                                                ? <><GiImperialCrown /> Máster</>
+                                                : <><FaChessKnight /> Jugador</>
+                                            }
                                         </span>
                                     </div>
                                 </div>
@@ -112,7 +123,10 @@ const Dashboard = () => {
                                 return (
                                     <div key={p.id} className={styles.item} onClick={() => navigate(`/personajes/${p.id}`)}>
                                         <div className={styles.itemAvatar}>
-                                            {p.nombre.slice(0, 2).toUpperCase()}
+                                            {p.imagen_url
+                                                ? <img src={p.imagen_url} alt={p.nombre} />
+                                                : p.nombre.slice(0, 2).toUpperCase()
+                                            }
                                         </div>
                                         <div className={styles.itemInfo}>
                                             <span className={styles.itemNombre}>{p.nombre}</span>
@@ -135,18 +149,9 @@ const Dashboard = () => {
                     {tiradas.length === 0 ? (
                         <p className={styles.vacio}>No has hecho tiradas todavía.</p>
                     ) : (
-                        <div className={styles.tiradas}>
-                            {tiradas.map(t => (
-                                <div key={t.id} className={styles.tiradaItem}>
-                                    <span className={styles.tiradaTotal}>{t.resultado_total}</span>
-                                    <span className={styles.tiradaFormula}>{t.formula}</span>
-                                    {t.personaje_nombre && <span className={styles.tiradaMeta}>🧙 {t.personaje_nombre}</span>}
-                                    {t.campana_titulo && <span className={styles.tiradaMeta}>📖 {t.campana_titulo}</span>}
-                                    <span className={styles.tiradaFecha}>{formatearFecha(t.timestamp)}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                        <>
+                            <DiceHistory />
+                        </>)}
                 </div>
             </div>
         </div>

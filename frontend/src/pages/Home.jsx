@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
-import { GiDiceTwentyFacesTwenty } from 'react-icons/gi';
+import { GiCrossedSwords, GiWizardFace, GiDiceTwentyFacesTwenty, GiSpellBook } from 'react-icons/gi';
 
 const Home = () => {
     return (
@@ -21,12 +21,12 @@ const Home = () => {
                 <h2>Todo lo que necesitas para jugar</h2>
                 <div className={styles.grid}>
                     <div className={styles.card}>
-                        <span className={styles.icono}>⚔️</span>
+                        <span className={styles.icono}><GiCrossedSwords/></span>
                         <h3>Campañas</h3>
                         <p>Crea y gestiona tus campañas. Invita jugadores, organiza sesiones y lleva el control de tu historia.</p>
                     </div>
                     <div className={styles.card}>
-                        <span className={styles.icono}>🧙</span>
+                        <span className={styles.icono}><GiWizardFace /></span>
                         <h3>Personajes</h3>
                         <p>Crea personajes con fichas completas adaptadas a cada sistema de rol.</p>
                     </div>
@@ -36,7 +36,7 @@ const Home = () => {
                         <p>Tira dados con fórmulas personalizadas y consulta el historial de tiradas de tus partidas.</p>
                     </div>
                     <div className={styles.card}>
-                        <span className={styles.icono}>📖</span>
+                        <span className={styles.icono}><GiSpellBook /></span>
                         <h3>Juegos</h3>
                         <p>Explora los sistemas de rol disponibles y encuentra el que mejor se adapte a tu grupo.</p>
                     </div>

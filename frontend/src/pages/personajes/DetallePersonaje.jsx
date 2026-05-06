@@ -162,6 +162,36 @@ const DetallePersonaje = () => {
                                 </div>
                             </div>
                         </div>
+                        {/* Ataques */}
+                        {armas.length > 0 && (
+                            <div className={styles.seccion}>
+                                <h2 className={styles.seccionTitulo}>Ataques</h2>
+                                <table className={styles.tablaAtaques}>
+                                    <thead>
+                                        <tr>
+                                            <th>Arma</th>
+                                            <th>Bon. ataque</th>
+                                            <th>Daño</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {armas.map((arma, i) => {
+                                            const mod = calcularModificador(ficha.atributos[arma.atributo]);
+                                            const bonAtaque = mod + (arma.competencia ? bonComp : 0);
+                                            const danio = `${arma.dado_dano} ${formatearMod(mod)}`;
+                                            return (
+                                                <tr key={i}>
+                                                    <td>{arma.nombre}</td>
+                                                    <td>{formatearMod(bonAtaque)}</td>
+                                                    <td>{danio}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
                     </div>
 
                     {/* Columna derecha — aside */}
@@ -207,35 +237,6 @@ const DetallePersonaje = () => {
                 </div>
             )}
 
-            {/* Ataques */}
-            {armas.length > 0 && (
-                <div className={styles.seccion}>
-                    <h2 className={styles.seccionTitulo}>Ataques</h2>
-                    <table className={styles.tablaAtaques}>
-                        <thead>
-                            <tr>
-                                <th>Arma</th>
-                                <th>Bon. ataque</th>
-                                <th>Daño</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {armas.map((arma, i) => {
-                                const mod = calcularModificador(ficha.atributos[arma.atributo]);
-                                const bonAtaque = mod + (arma.competencia ? bonComp : 0);
-                                const danio = `${arma.dado_dano} ${formatearMod(mod)}`;
-                                return (
-                                    <tr key={i}>
-                                        <td>{arma.nombre}</td>
-                                        <td>{formatearMod(bonAtaque)}</td>
-                                        <td>{danio}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-            )}
             {/* Tirada de dados */}
             <DiceRoller
                 id_personaje={parseInt(id)}

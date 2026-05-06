@@ -48,12 +48,12 @@ const Header = () => {
                 {usuario ? (
                     <div className={styles.perfil} ref={dropdownRef} onClick={() => setDropdownAbierto(!dropdownAbierto)}>
                         <div className={styles.avatar}>
-            {usuario?.imagen_url ? (
-                <img src={usuario.imagen_url} alt={usuario.nombre_usuario} className={styles.avatarImg} />
-            ) : (
-                iniciales
-            )}
-        </div>
+                            {usuario?.imagen_url ? (
+                                <img src={usuario.imagen_url} alt={usuario.nombre_usuario} className={styles.avatarImg} />
+                            ) : (
+                                iniciales
+                            )}
+                        </div>
                         <span className={styles.nombre}>{usuario.nombre_usuario}</span>
                         <span className={styles.flecha}>▼</span>
 

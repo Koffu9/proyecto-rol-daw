@@ -62,6 +62,9 @@
 .metaItem {
     font-size: 0.75rem;
     color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .vacio {

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getTiradasUsuarioRequest, getTiradasCampanaRequest } from '../../services/tiradaService';
 import styles from './DiceHistory.module.css';
+import { GiCharacter } from 'react-icons/gi';
+import { FiClock } from 'react-icons/fi';
+
 
 const DiceHistory = ({ id_campana, refresh = 0 }) => {
     const [tiradas, setTiradas] = useState([]);
@@ -47,9 +50,13 @@ const DiceHistory = ({ id_campana, refresh = 0 }) => {
                                         <span className={styles.metaItem}>@{t.nombre_usuario}</span>
                                     )}
                                     {t.personaje_nombre && (
-                                        <span className={styles.metaItem}>🧙 {t.personaje_nombre}</span>
+                                        <span className={styles.metaItem}>
+                                            <GiCharacter /> {t.personaje_nombre}
+                                        </span>
                                     )}
-                                    <span className={styles.metaItem}>🕐 {formatearFecha(t.timestamp)}</span>
+                                    <span className={styles.metaItem}>
+                                        <FiClock /> {formatearFecha(t.timestamp)}
+                                    </span>
                                 </div>
                             </div>
                         </div>

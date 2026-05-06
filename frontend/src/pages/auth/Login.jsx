@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { loginRequest } from '../../services/authService';
 import styles from './Login.module.css';
+import AuthLogo from '../../components/auth/AuthLogo';
 
 const Login = () => {
     const [form, setForm] = useState({ email: '', password: '' });
@@ -29,6 +30,7 @@ const Login = () => {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
+                <AuthLogo />
                 <h1 className={styles.titulo}>Iniciar sesión</h1>
                 {error && <p className={styles.error}>{error}</p>}
                 <form onSubmit={handleSubmit} className={styles.form}>

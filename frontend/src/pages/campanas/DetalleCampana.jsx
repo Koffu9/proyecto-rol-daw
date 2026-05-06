@@ -70,6 +70,9 @@ const DetalleCampana = () => {
             const res = await getCampanaRequest(id);
             setCampana(res.data);
         } catch (error) {
+            if (error.response?.status === 403) {
+                navigate('/campanas');
+            }
             console.error(error);
         } finally {
             setCargando(false);
@@ -101,11 +104,11 @@ const DetalleCampana = () => {
                 </button>
                 <div className={styles.cabeceraInfo}>
                     <div className={styles.imagen}>
-                        {campana.mapa_url ? (
-                            <img src={campana.mapa_url} alt={campana.titulo} />
-                        ) : (
-                            <div className={styles.imagenPlaceholder}>🎲</div>
-                        )}
+                        <img
+                            src={campana.mapa_url || '/default-campana.jpg'}
+                            alt={campana.titulo}
+                            onError={e => e.target.src = '/default-campana.jpg'}
+                        />
                     </div>
                     <div className={styles.info}>
                         <h1>{campana.titulo}</h1>
@@ -177,7 +180,7 @@ const DetalleCampana = () => {
                             <h3>Personajes de la campaña</h3>
                             <button className={styles.botonPrimario} onClick={async () => {
                                 const res = await getPersonajesRequest();
-                                setMisPersonajes(res.data.filter(p => !p.id_campana));
+                                setMisPersonajes(res.data.filter(p => !p.id_campana || p.id_campana === parseInt(id)));
                                 setModalAsociar(true);
                             }}>
                                 + Añadir personaje
@@ -192,7 +195,10 @@ const DetalleCampana = () => {
                                     return (
                                         <div key={p.id} className={styles.personajeItem}>
                                             <div className={styles.personajeAvatar}>
-                                                {p.nombre.slice(0, 2).toUpperCase()}
+                                                {p.imagen_url
+                                                    ? <img src={p.imagen_url} alt={p.nombre} />
+                                                    : p.nombre.slice(0, 2).toUpperCase()
+                                                }
                                             </div>
                                             <div className={styles.personajeInfo}>
                                                 <span className={styles.personajeNombre}>{p.nombre}</span>
@@ -257,6 +263,9 @@ const DetalleCampana = () => {
                         <DiceRoller
                             id_campana={parseInt(id)}
                             onTirada={() => setRefreshTiradas(prev => prev + 1)}
+                            esMaster={esMaster}
+                            personajes={personajesCampana.filter(p => p.id_usuario === usuario.id)}
+                            npcs={npcs.filter(n => n.visible || esMaster)}
                         />
                         <DiceHistory id_campana={parseInt(id)} refresh={refreshTiradas} />
                     </div>
@@ -423,7 +432,7 @@ const DetalleCampana = () => {
                             <div className={styles.modalOverlay} onClick={() => setNpcSeleccionado(null)}>
                                 <div className={styles.modal} onClick={e => e.stopPropagation()}>
                                     {npcSeleccionado.imagen_url && (
-                                        <img src={npcSeleccionado.imagen_url} alt={npcSeleccionado.nombre} style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 'var(--radius-md)', marginBottom: '0.5rem' }} />
+                                        <img className={styles.npcImg} src={npcSeleccionado.imagen_url} alt={npcSeleccionado.nombre} style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 'var(--radius-md)', marginBottom: '0.5rem' }} />
                                     )}
                                     <h2>{npcSeleccionado.nombre}</h2>
                                     <p>{npcSeleccionado.descripcion || 'Sin descripción.'}</p>

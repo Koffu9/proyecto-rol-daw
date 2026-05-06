@@ -1,0 +1,25 @@
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+}
+
+.icono {
+    font-size: 2rem;
+    color: var(--accent-primary);
+}
+
+.texto {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+    font-weight: 700;
+}
+
+.logo:hover .icono,
+.logo:hover .texto {
+    color: var(--accent-secondary);
+}

@@ -39,10 +39,15 @@ const getCampanas = async (req, res) => {
 // Obtiene el detalle de una campaña por id
 const getCampana = async (req, res) => {
     const { id } = req.params;
+    const id_usuario = req.usuario.id;
 
     try {
         const campana = await campanaModel.getCampanaById(id);
         if (!campana) return res.status(404).json({ error: 'Campaña no encontrada' });
+
+        // Verificamos que el usuario es participante o es el master
+        const yaParticipa = await campanaModel.isParticipante(id, id_usuario);
+        if (!yaParticipa) return res.status(403).json({ error: 'No tienes acceso a esta campaña' });
 
         res.json(campana);
     } catch (error) {

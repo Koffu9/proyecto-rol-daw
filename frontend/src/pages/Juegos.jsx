@@ -13,7 +13,7 @@ const Juegos = () => {
                 {/* D&D 5e */}
                 <div className={styles.juegoCard}>
                     <div className={styles.juegoImagen}>
-                        <img src="https://upload.wikimedia.org/wikipedia/en/8/8e/Dungeons_%26_Dragons_5th_Edition_logo.svg" alt="D&D 5e" />
+                        <img src="/dnd.svg" alt="D&D 5e" />
                     </div>
                     <div className={styles.juegoInfo}>
                         <div className={styles.juegoHeader}>
@@ -49,7 +49,7 @@ const Juegos = () => {
                         <span>Próximamente</span>
                     </div>
                     <div className={styles.juegoImagen}>
-                        <div className={styles.imagenPlaceholder}>🎲</div>
+                        <img src="/jth.jfif" alt="Journey to Halo" />
                     </div>
                     <div className={styles.juegoInfo}>
                         <div className={styles.juegoHeader}>
