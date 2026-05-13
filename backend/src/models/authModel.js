@@ -24,7 +24,6 @@ const createUsuario = async (nombre_usuario, email, password_hash) => {
     return result;
 };
 
-
 // Obtiene un usuario por su id
 const findById = async (id) => {
     const [rows] = await db.query(
